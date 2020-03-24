@@ -1,8 +1,8 @@
 {
-  "name": "my-bot",
+  "name": "count-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "count-bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "qrcode-terminal": "^0.12.0",
-    "wechaty": "^0.31.26",
-    "wechaty-puppet-padplus": "^0.4.6"
+    "silly-datetime": "^0.1.2",
+    "finis": "^0.4.4",
+    "ejsexcel": "^3.6.0",
+    "wechaty": "^0.31.26"
   }
 }
