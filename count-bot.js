@@ -10,6 +10,7 @@ const fs = require('fs')
 const https = require('https');
 const SqliteDB = require('./sqlite.js').SqliteDB;
 const ejsexcel = require("ejsexcel");
+const qr = require('qr-image');
 const util = require("util");
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
@@ -40,23 +41,21 @@ bot.start()
 
 function onScan (qrcode, status) {
 	require('qrcode-terminal').generate(qrcode, { small: true })  // show qrcode on console
-	logger.info(qrcode + 'status:' + status)
-  //   downloadurl(qrcode, '/home/downloads/wechat.jpg', function(){
-  // 	logger.info('qrcode create finish');
-  //   });
+	console.log(qrcode + 'status:' + status)
+
 	const qr_png = qr.image(qrcode, { type: 'png' });
-	qr_png.pipe(fs.createWriteStream('/home/downloads/wechat.png'));
+	qr_png.pipe(fs.createWriteStream('wechat.png'));
   
 	const qrcodeImageUrl = [
 	  'https://api.qrserver.com/v1/create-qr-code/?data=',
 	  encodeURIComponent(qrcode),
 	].join('')
   
-	logger.info(qrcodeImageUrl)
+	console.log(qrcodeImageUrl)
 	
 	 const ftqqUrl = [
-	  'https://sc.ftqq.com/SCU34483Teb2475db9d046eb7a6d084e63902fe905bcd3e83cbea9.send?text=',
-	  encodeURIComponent('<a href=https://api.qrserver.com/v1/create-qr-code/?data='+qrcode+'>二维码</a><a href=http://47.105.59.253/downloads/wechat.png>二维码图片</a>'),
+	  'https://sc.ftqq.com/selfid.send?text=',
+	  encodeURIComponent('<a href=https://api.qrserver.com/v1/create-qr-code/?data='+qrcode+'>二维码</a><a href=http://*/wechat.png>二维码图片</a>'),
 	 ].join('')
 	
 	if (status == 1) {
