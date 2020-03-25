@@ -28,10 +28,8 @@ bot.on('logout',  onLogout)
 bot.on('message', onMessage)
 
 const createWorkTotalTableSql = "create table if not exists worktotal(workid INTEGER, userid TEXT, username TEXT, totalnum INTEGER, curnum INTEGER, reporttime TEXT, reportstr TEXT, verify TEXT);"; 
-//const createWorkDiaryTableSql = "create table if not exists workdiary(workid INTEGER, userid TEXT, username TEXT, reportdate TEXT, totalnum INTEGER);"; 
 const createWorkDetailTableSql = "create table if not exists workdetail(workid INTEGER, userid TEXT, username TEXT, totalnum INTEGER, curnum INTEGER, reporttime TEXT, reportstr TEXT, verify TEXT);"; 
 sqliteDB.createTable(createWorkTotalTableSql);
-//sqliteDB.createTable(createWorkDiaryTableSql);
 sqliteDB.createTable(createWorkDetailTableSql);
 
 bot.start()
@@ -44,7 +42,7 @@ function onScan (qrcode, status) {
 	console.log(qrcode + 'status:' + status)
 
 	const qr_png = qr.image(qrcode, { type: 'png' });
-	qr_png.pipe(fs.createWriteStream('wechat.png'));
+	qr_png.pipe(fs.createWriteStream('wechat.png'));  //登录二维码保存为图片，后面可以通过web服务器，扫码图片登录
   
 	const qrcodeImageUrl = [
 	  'https://api.qrserver.com/v1/create-qr-code/?data=',
@@ -61,6 +59,8 @@ function onScan (qrcode, status) {
 	if (status == 1) {
 	  const curdate=new Date()
 	  if (curdate.getHours() > 6 && curdate.getHours() < 23)	{
+		  //https://sc.ftqq.com/3.version
+		  //每天7点到22点期间，通过方糖发送登录提醒
 		  https.get(ftqqUrl, (res) => {
 			  console.log(`Got response: ${res.statusCode}`);
 			  // consume response body
